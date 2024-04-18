@@ -1,0 +1,120 @@
+Auto Plant Function
+local function autoPlant()
+    while true do
+        -- Check if backpack has fruits
+        local fruit = game.Players.LocalPlayer.Backpack:FindFirstChild("Fruit")
+        if fruit then
+            -- Loop through each plant box
+            for _, plantBox in ipairs(game.Workspace.PlantBoxes:GetChildren()) do
+                -- Check if the plant box is empty
+                if plantBox:FindFirstChild("Plant") == nil then
+                    -- Plant a fruit
+                    fruit.Parent = plantBox
+                    wait(1) -- Wait for planting animation
+                    break -- Only plant one fruit at a time
+                end
+            end
+        end
+        wait(1) -- Check every second
+    end
+end
+
+-- Auto Walk to Plant Box Function
+local function autoWalkToPlantBox()
+    while true do
+        -- Get the nearest plant box
+        local nearestPlantBox = nil
+        local shortestDistance = math.huge
+        for _, plantBox in ipairs(game.Workspace.PlantBoxes:GetChildren()) do
+            local distance = (plantBox.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlantBox = plantBox
+            end
+        end
+
+        -- Check if a plant box is found
+        if nearestPlantBox then
+            -- Check if the player is close to the plant box
+            if shortestDistance > 10 then
+                -- Walk to the nearest plant box
+                game.Players.LocalPlayer.Character:MoveTo(nearestPlantBox.Position)
+                wait(1) -- Wait for the player to reach the plant box
+            end
+        end
+
+        wait(5) -- Check every 5 seconds
+    end
+end
+
+-- Auto Harvest Function
+local function autoHarvest()
+    while true do
+        -- Loop through each plant box
+        for _, plantBox in ipairs(game.Workspace.PlantBoxes:GetChildren()) do
+            -- Check if the plant box has a mature plant
+            local plant = plantBox:FindFirstChild("Plant")
+            if plant and plant.Growth.Value >= 100 then
+                -- Harvest the plant
+                plantBox:FindFirstChild("HarvestButton"):FireServer()
+                wait(1) -- Wait for harvesting animation
+            end
+        end
+        wait(1) -- Check every second
+    end
+end
+
+-- Auto Heal Function
+local function autoHeal()
+    while true do
+        -- Check if the player needs healing
+        local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid.Health < humanoid.MaxHealth then
+            -- Check if the player has bloodfruit or any other fruits for healing
+            local fruits = game.Players.LocalPlayer.Backpack:GetChildren()
+            for _, fruit in ipairs(fruits) do
+                if fruit.Name == "Bloodfruit" or fruit.Name == "AnyOtherFruit" then
+                    -- Eat the fruit for healing
+                    fruit.Parent = game.Players.LocalPlayer.Character
+                    fruit:Activate()
+                    wait(1) -- Wait for eating animation
+                    break -- Only eat one fruit at a time
+                end
+            end
+        end
+        wait(5) -- Check every 5 seconds
+    end
+end
+
+-- Create buttons for each functionality
+local function createButtons()
+    local buttons = {
+        {
+            label = "Auto Plant",
+            callback = autoPlant
+        },
+        {
+            label = "Auto Walk to Plant Box",
+            callback = autoWalkToPlantBox
+        },
+        {
+            label = "Auto Harvest",
+            callback = autoHarvest
+        },
+        {
+            label = "Auto Heal",
+            callback = autoHeal
+        }
+    }
+    for _, btn in ipairs(buttons) do
+        local button = Instance.new("TextButton")
+        button.Text = btn.label
+        button.Parent = game.Players.LocalPlayer.PlayerGui
+        button.Size = UDim2.new(0, 150, 0, 50)
+        button.Position = UDim2.new(0, 10, 0, (_ - 1) * 60)
+        button.MouseButton1Click:Connect(btn.callback)
+    end
+end
+
+-- Start creating buttons
+createButtons()
