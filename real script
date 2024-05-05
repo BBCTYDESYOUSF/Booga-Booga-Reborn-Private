@@ -1,0 +1,141 @@
+Name = "Booga Booga Reborn",
+    HidePremium = false,
+    Load = function()
+        Orion:MakeNotification({
+            Name = "Loaded!",
+            Content = "GUI loaded successfully!",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+    end
+})
+
+-- Create tabs
+local FarmingTab = GUI:MakeTab({
+    Name = "Farming",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+local MovementTab = GUI:MakeTab({
+    Name = "Movement",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Create sections
+local AutoEatSection = FarmingTab:MakeSection({
+    Name = "Auto Eat"
+})
+
+local AutoSwingSection = FarmingTab:MakeSection({
+    Name = "Auto Swing"
+})
+
+local AutoFarmSection = FarmingTab:MakeSection({
+    Name = "Auto Farm"
+})
+
+local AutoMoveSection = MovementTab:MakeSection({
+    Name = "Auto Move"
+})
+
+local AutoFarmGoldNodesSection = FarmingTab:MakeSection({
+    Name = "Auto Farm Gold Nodes"
+})
+
+-- Create toggles
+local AutoEatToggle = AutoEatSection:MakeToggle({
+    Name = "Auto Eat",
+    Default = false,
+    Callback = function(state)
+        if state then
+            while true do
+                wait(1)
+                for _, food in ipairs(game.Workspace:GetDescendants()) do
+                    if food.Name == "Food" and food.Parent.Name == "PlantBox" then
+                        fireclick(food.ClickDetector)
+                        break
+                    end
+                end
+            end
+        end
+    end
+})
+
+local AutoSwingToggle = AutoSwingSection:MakeToggle({
+    Name = "Auto Swing",
+    Default = false,
+    Callback = function(state)
+        if state then
+            while true do
+                wait(1)
+                if game.Players.LocalPlayer.Backpack:FindFirstChild("Tool") then
+                    local tool = game.Players.LocalPlayer.Backpack:FindFirstChild("Tool")
+                    game.Players.LocalPlayer.Character.Humanoid:EquipTool(tool)
+                    fireclick(tool.Handle)
+                end
+            end
+        end
+    end
+})
+
+local AutoFarmToggle = AutoFarmSection:MakeToggle({
+    Name = "Auto Farm",
+    Default = false,
+    Callback = function(state)
+        if state then
+            while true do
+                wait(1)
+                for _, plant in ipairs(game.Workspace:GetDescendants()) do
+                    if plant.Name == "Plant" and plant.Parent.Name == "PlantBox" then
+                        fireclick(plant.ClickDetector)
+                        break
+                    end
+                end
+            end
+        end
+    end
+})
+
+local AutoMoveToggle = AutoMoveSection:MakeToggle({
+    Name = "Auto Move",
+    Default = false,
+    Callback = function(state)
+        if state then
+            while true do
+                wait(1)
+                local plantBox = game.Workspace:FindFirstChild("PlantBox")
+                if plantBox then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = plantBox.CFrame
+                    break
+                end
+            end
+            local bush = game.Workspace:FindFirstChild("Bush")
+            if bush then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = bush.CFrame
+            end
+        end
+    end
+})
+
+local AutoFarmGoldNodesToggle = AutoFarmGoldNodesSection:MakeToggle({
+    Name = "Auto Farm Gold Nodes",
+    Default = false,
+    Callback = function(state)
+        if state then
+            while true do
+                wait(1)
+                for _, goldNode in ipairs(game.Workspace:GetDescendants()) do
+                    if goldNode.Name == "GoldNode" then
+                        fireclick(goldNode.ClickDetector)
+                        fireclick(goldNode.ClickDetector)
+                        fireclick(goldNode.ClickDetector)
+                        fireclick(goldNode.ClickDetector)
+                        break
+                    end
+                end
+            end
+        end
+    end
+})
