@@ -1,1 +1,1 @@
-# Booga-Booga-Reborn-Private
+All hacks for Stars services
