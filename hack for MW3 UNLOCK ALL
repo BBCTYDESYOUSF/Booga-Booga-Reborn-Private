@@ -1,0 +1,47 @@
+#include "IW5.h"
+
+// Constants
+const int WEAPON_COUNT = 50; // Change this to the actual number of weapons in the game
+const int CAMO_COUNT = 10; // Change this to the actual number of camos per weapon
+const int ATTACHMENT_COUNT = 10; // Change this to the actual number of attachments per weapon
+const int GUN_COUNT = 50; // Change this to the actual number of guns in the game
+
+// Unlock all camos for all weapons
+void UnlockAllCamos() {
+    for (int weaponIndex = 0; weaponIndex < WEAPON_COUNT; weaponIndex++) {
+        Weapon weapon = GetWeapon(weaponIndex);
+        for (int camoIndex = 0; camoIndex < CAMO_COUNT; camoIndex++) {
+            weapon.UnlockCamo(camoIndex);
+        }
+    }
+}
+
+// Unlock all attachments for all weapons
+void UnlockAllAttachments() {
+    for (int weaponIndex = 0; weaponIndex < WEAPON_COUNT; weaponIndex++) {
+        Weapon weapon = GetWeapon(weaponIndex);
+        for (int attachmentIndex = 0; attachmentIndex < ATTACHMENT_COUNT; attachmentIndex++) {
+            weapon.UnlockAttachment(attachmentIndex);
+        }
+    }
+}
+
+// Unlock all guns
+void UnlockAllGuns() {
+    for (int gunIndex = 0; gunIndex < GUN_COUNT; gunIndex++) {
+        Gun gun = GetGun(gunIndex);
+        gun.Unlock();
+    }
+}
+
+// Main function
+void Main() {
+    // Unlock all camos
+    UnlockAllCamos();
+
+    // Unlock all attachments
+    UnlockAllAttachments();
+
+    // Unlock all guns
+    UnlockAllGuns();
+}
